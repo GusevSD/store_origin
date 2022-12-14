@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+	<meta name="veiwport">
+	<link href="C:\Users\gusev\Desktop\web_project_dir\web_store_project\store_origin\templates\store_origin\css\bootstrap.css" rel="stylesheet">
+	<title>Магазин на диване</title>
+</head>
+<body>
+	<h1>Доступные товары</h1>
+	{% for item in items %}
+	<div class="container">
+		<h2>{{ item.title }}</h2>
+		<p><b>Артикул: </b>{{ item.vendor_code }}</p>  
+		<p>{{ item.short_comment }}</p>
+		<p>Цена: {{ item.current_price}} руб.</p>
+		<p>Минимальное количество товара для заказа: {{ item.min_num }}</p>
+	</div>
+	{% endfor %}
+	
+	<h1>Наши клиенты</h1>
+	<div class="container px-4">
+		{% for client in clients %}
+		<div class="container">
+			<div class = "p-3 border bg-light">
+				<h2><b>{{ client.name }}</b></h2>
+				<p>Телефон: {{ client.tel }}</p>  
+				<p>Почта: {{ client.email }}</p>
+				<p>Адрес: {{ client.address }}</p>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	
+	<h1>Заказы</h1>
+	{% for order in orders %}
+	<div class="container">
+		<h2>Заказ №{{ order.order_number }}</h2>
+		<p>{{ order.order_date|date:"d.m.Y. H:i:s"}}</p>
+		<p>Телефон: {{ order.client.tel }}</p>
+		<p>{{ order.payment_method }}</p>
+		<p>Доставка: {{ order.delivery_method }}</p>
+		<p>Клиент: {{ order.client.name }}</p>
+		<h3>Товары:</h3>
+		<ul>
+			{% for item in order.items.all %}
+				{% for ordereditem in order.ordereditem_set.all %}
+					{%if item == ordereditem.item %}
+						<li>{{item}} x {{ ordereditem.count }}</li>
+					{%endif%}
+				{% endfor %}
+			{% endfor %}
+		</ul>
+		<p>Сумма заказа: {{ order.order_price }}</p>
+	</div>
+	{% endfor %}
+	
+	<script src="C:\Users\gusev\Desktop\web_project_dir\web_store_project\store_origin\templates\store_origin\js\bootstrap.bundle.js"></script>
+</body>
+</html>
